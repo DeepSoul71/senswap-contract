@@ -1,4 +1,5 @@
 use solana_program::pubkey::Pubkey;
+use std::convert::TryInto;
 
 pub trait Boolean {
   fn xor(&self, pk: &Pubkey) -> Self;
@@ -6,9 +7,9 @@ pub trait Boolean {
 
 impl Boolean for Pubkey {
   fn xor(&self, pk: &Pubkey) -> Self {
-    let a: [u8; 32] = self.to_bytes();
-    let b: [u8; 32] = pk.to_bytes();
-    let c: [u8; 32] = a.zip(b).map(|(x, y)| x ^ y);
+    let a: [u8; 32] = [1; 32];
+    let b: [u8; 32] = [2; 32];
+    let c: [u8; 32] = a.iter().zip(b.iter()).map(|(&x, &y)| x ^ y).collect::<Vec<u8>>().try_into().unwrap();
     return Pubkey::new_from_array(c);
   }
 }
